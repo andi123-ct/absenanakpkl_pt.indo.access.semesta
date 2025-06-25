@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi PKL</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --gray-dark: #1f2937;
+            --gray-medium: #4b5563;
+            --gray-light: #f3f4f6;
+            --success: #10b981;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+            color: var(--gray-dark);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -80px;
+            right: -30px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .form-section, .photo-section {
+            padding: 1.8rem;
+            border-bottom: 1px solid #e5e7eb;
+            background: var(--white);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-medium);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background-color: var(--gray-light);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background-color: var(--white);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.85rem;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-section {
+            padding: 1.8rem;
+            background-color: var(--white);
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.85rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: var(--gray-light);
+            font-weight: 600;
+            color: var(--gray-medium);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .photo-preview {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            display: none;
+            border: 3px solid var(--white);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-light);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.2rem;
+            color: var(--gray-medium);
+            font-size: 0.875rem;
+            background-color: var(--gray-light);
+        }
+
+        .photo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 1.5rem;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            h1 {
+                font-size: 1.4rem;
+            }
+            
+            th, td {
+                padding: 0.7rem;
+            }
+            
+            .form-section, .photo-section, .history-section {
+                padding: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">ABSENSI PKL</div>
+            <h1>Sistem Presensi Harian</h1>
+        </header>
+
+        <!-- Form Absensi -->
+        <section class="form-section" id="formSection">
+            <div class="form-group">
+                <label for="name">Nama Lengkap</label>
+                <input type="text" id="name" placeholder="Masukkan nama lengkap">
+            </div>
+            <div class="form-group">
+                <label for="school">Asal Sekolah</label>
+                <input type="text" id="school" placeholder="Masukkan asal sekolah">
+            </div>
+            <button class="btn" id="btnSubmit">ABSEN MASUK</button>
+        </section>
+
+        <!-- Upload Foto -->
+        <section class="photo-section" id="photoSection" style="display: none;">
+            <h2>Upload Bukti Kehadiran</h2>
+            <p>Silahkan upload foto diri sebagai bukti kehadiran di tempat PKL</p>
+            
+            <div class="photo-container">
+                <input type="file" id="photoUpload" accept="image/*" capture="environment" style="display: none;">
+                <label for="photoUpload" class="upload-btn">Ambil Foto</label>
+                
+                <img id="photoPreview" class="photo-preview" alt="Preview Foto" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/19cb4ad6-af6d-45e7-b223-f6146550698d.png">
+                
+                <button class="btn" id="btnUpload" style="display: none;">SIMPAN ABSENSI</button>
+            </div>
+        </section>
+
+        <!-- Riwayat Absensi -->
+        <section class="history-section">
+            <h2>Riwayat Absensi Terkini</h2>
+            <div style="overflow-x: auto;">
+                <table id="attendanceTable">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Sekolah</th>
+                            <th>Tanggal</th>
+                            <th>Jam</th>
+                            <th>Foto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceBody">
+                        <!-- Data akan muncul di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer>
+            © 2023 Sistem Absensi PKL - Dibuat dengan ❤️
+        </footer>
+    </div>
+
+    <script>
+        // Simpan data di localStorage
+        const STORAGE_KEY = 'pkl_attendance_data_v3';
+        
+        // Element DOM
+        const nameInput = document.getElementById('name');
+        const schoolInput = document.getElementById('school');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const photoSection = document.getElementById('photoSection');
+        const photoUpload = document.getElementById('photoUpload');
+        const photoPreview = document.getElementById('photoPreview');
+        const btnUpload = document.getElementById('btnUpload');
+        const attendanceBody = document.getElementById('attendanceBody');
+        const formSection = document.getElementById('formSection');
+        
+        // Muat data dari localStorage (sudah terurut dari yang terbaru)
+        let attendanceData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        
+        // Fungsi untuk menyimpan data
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(attendanceData));
+            renderAttendanceList();
+        }
+        
+        // Fungsi untuk format tanggal
+        function formatDate(date) {
+            const options = { 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric',
+                weekday: 'short'
+            };
+            let formatted = date.toLocaleDateString('id-ID', options);
+            // Format: Sel, 15 Agu 2023
+            return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+        }
+        
+        // Fungsi untuk format waktu
+        function formatTime(date) {
+            return date.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+        }
+        
+        // Fungsi untuk menampilkan data absensi (sudah terurut dari yang terbaru)
+        function renderAttendanceList() {
+            attendanceBody.innerHTML = '';
+            
+            if (attendanceData.length === 0) {
+                attendanceBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 1.5rem; color: var(--gray-medium);">
+                            Belum ada data absensi
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            attendanceData.forEach(item => {
+                const date = new Date(item.datetime);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight: 500;">${item.name}</td>
+                    <td>${item.school}</td>
+                    <td>${formatDate(date)}</td>
+                    <td>${formatTime(date)}</td>
+                    <td>
+                        ${item.photo ? 
+                            `<a href="#" onclick="showPhoto('${item.photo}'); return false;" style="color: var(--primary-light); font-weight: 500;">Lihat</a>` : 
+                            '<span style="color: var(--gray-medium);">-</span>'}
+                    </td>
+                `;
+                
+                attendanceBody.appendChild(row);
+            });
+        }
+
+        // Fungsi untuk menampilkan foto (modal)
+        window.showPhoto = function(photoData) {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+            modal.style.zIndex = '1000';
+            
+            const imgContainer = document.createElement('div');
+            imgContainer.style.position = 'relative';
+            imgContainer.style.maxWidth = '90%';
+            imgContainer.style.maxHeight = '90%';
+            
+            const img = document.createElement('img');
+            img.src = photoData;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '90vh';
+            img.style.borderRadius = '0.5rem';
+            img.style.boxShadow = '0 10px 25px rgba(0,0,0,0.3)';
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.top = '-15px';
+            closeBtn.style.right = '-15px';
+            closeBtn.style.width = '40px';
+            closeBtn.style.height = '40px';
+            closeBtn.style.backgroundColor = 'white';
+            closeBtn.style.border = 'none';
+            closeBtn.style.borderRadius = '50%';
+            closeBtn.style.fontSize = '1.5rem';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+            
+            closeBtn.onclick = function() {
+                document.body.removeChild(modal);
+            };
+            
+            imgContainer.appendChild(img);
+            imgContainer.appendChild(closeBtn);
+            modal.appendChild(imgContainer);
+            
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            };
+            
+            document.body.appendChild(modal);
+        };
+        
+        // Event listeners
+        btnSubmit.addEventListener('click', () => {
+            const name = nameInput.value.trim();
+            const school = schoolInput.value.trim();
+            
+            if (!name || !school) {
+                alert('Harap isi nama dan asal sekolah terlebih dahulu!');
+                return;
+            }
+            
+            currentAttendance = {
+                name,
+                school,
+                datetime: new Date().toISOString()
+            };
+            
+            // Sembunyikan form, tampilkan upload foto
+            formSection.style.display = 'none';
+            photoSection.style.display = 'block';
+        });
+        
+        photoUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    photoPreview.src = event.target.result;
+                    photoPreview.style.display = 'block';
+                    btnUpload.style.display = 'block';
+                    
+                    // Simpan foto sebagai base64
+                    currentAttendance.photo = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        btnUpload.addEventListener('click', () => {
+            if (!currentAttendance.photo) {
+                alert('Harap upload foto terlebih dahulu!');
+                return;
+            }
+            
+            // Tambahkan data baru di awal array (agar muncul di paling atas)
+            attendanceData.unshift(currentAttendance);
+            saveData();
+            
+            // Reset form
+            nameInput.value = '';
+            schoolInput.value = '';
+            photoPreview.src = '';
+            photoPreview.style.display = 'none';
+            btnUpload.style.display = 'none';
+            photoUpload.value = '';
+            
+            // Kembalikan ke form awal
+            formSection.style.display = 'block';
+            photoSection.style.display = 'none';
+            
+            alert('Absensi berhasil disimpan!');
+        });
+        
+        // Tampilkan data saat pertama kali load (sudah terurut dari yang terbaru)
+        renderAttendanceList();
+    </script>
+</body>
+</html>
